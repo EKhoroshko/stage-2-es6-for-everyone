@@ -15,7 +15,6 @@ export function createFightersSelector() {
     selectedFighters = [firstFighter, secondFighter];
 
     renderSelectedFighters(selectedFighters);
-    selectedFighters.length = 0;
   };
 }
 
@@ -23,16 +22,18 @@ const fighterDetailsMap = new Map();
 
 export async function getFighterInfo(fighterId) {
   // get fighter info from fighterDetailsMap or from service and write it to fighterDetailsMap
-  try {
-    const selectedFighters = await fighterService.getFighterDetails(fighterId);
-    fighterDetailsMap.set(fighterId, selectedFighters);
-    return selectedFighters;
-  } catch (error) {
-    throw error;
+  if (fighterDetailsMap.has(fighterId)) {
+    return fighterDetailsMap.get(fighterId);
+  } else {
+    try {
+      const selectedFighter = await fighterService.getFighterDetails(fighterId);
+      fighterDetailsMap.set(fighterId, selectedFighter);
+      return selectedFighter;
+    } catch (error) {
+      throw error;
+    }
   }
-
 }
-
 
 function renderSelectedFighters(selectedFighters) {
   const fightersPreview = document.querySelector('.preview-container___root');
