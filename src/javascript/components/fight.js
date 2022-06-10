@@ -26,7 +26,6 @@ export async function fight(firstFighter, secondFighter) {
 
     document.addEventListener("keydown", function (event) {
       pressCode.push(event.code);
-      console.log(pressCode);
       if (controls.PlayerOneCriticalHitCombination.every(key => pressCode.includes(key)) && firstFighter.crit === true) {
         secondFighter.health -= getCriticalPower(firstFighter);
         rightIndikator.style.width = secondFighter.health * secondFighter.healthPercent + '%';
@@ -49,8 +48,6 @@ export async function fight(firstFighter, secondFighter) {
     document.addEventListener("keyup", function (event) {
       if (pressCode.length == 0) return;
       pressCode.length = 0;
-      console.log(pressCode);
-
 
       if (!pressCode[controls.PlayerTwoBlock]) {
         if (event.code === controls.PlayerOneAttack && event.code !== controls.PlayerOneBlock) {
