@@ -49,23 +49,27 @@ export async function fight(firstFighter, secondFighter) {
       if (pressCode.length == 0) return;
       pressCode.length = 0;
 
-      if (event.code === controls.PlayerOneAttack) {
-        secondFighter.health -= getDamage(firstFighter, secondFighter);
-        rightIndikator.style.width = secondFighter.health * secondFighter.healthPercent + '%';
-        if (secondFighter.health <= 0) {
-          rightIndikator.style.width = '0%';
-          startFight = false;
-          resolve(firstFighter)
+      if (!pressCode[controls.PlayerTwoBlock]) {
+        if (event.code === controls.PlayerOneAttack && event.code !== controls.PlayerOneBlock) {
+          secondFighter.health -= getDamage(firstFighter, secondFighter);
+          rightIndikator.style.width = secondFighter.health * secondFighter.healthPercent + '%';
+          if (secondFighter.health <= 0) {
+            rightIndikator.style.width = '0%';
+            startFight = false;
+            resolve(firstFighter)
+          }
         }
       }
 
-      if (event.code === controls.PlayerTwoAttack) {
-        firstFighter.health -= getDamage(secondFighter, firstFighter);
-        leftIndikator.style.width = firstFighter.health * secondFighter.healthPercent + "%";
-        if (firstFighter.health <= 0) {
-          leftIndikator.style.width = '0%';
-          startFight = false;
-          resolve(secondFighter)
+      if (!pressCode[controls.PlayerOneBlock]) {
+        if (event.code === controls.PlayerTwoAttack && event.code !== controls.PlayerTwoBlock) {
+          firstFighter.health -= getDamage(secondFighter, firstFighter);
+          leftIndikator.style.width = firstFighter.health * secondFighter.healthPercent + "%";
+          if (firstFighter.health <= 0) {
+            leftIndikator.style.width = '0%';
+            startFight = false;
+            resolve(secondFighter)
+          }
         }
       }
     });
